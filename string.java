@@ -33,7 +33,8 @@ public class string {
         int index= 0;
         for (int i = aux[1]; i < aux.length; i++) { // start from min so no unnecessary 
             for (int j = 0; j < aux[i]; j++) { // if 0 then pass
-                str[index++] = (char)i;                
+                str[index++] = (char)i; 
+                System.out.print((char)i+" ");  
             }
         }
         return str;
@@ -111,10 +112,55 @@ public class string {
         return false;
     }
 
-    public static void main(String[] args) {
-        String word = "ababcabcabababd";
+    public static int maxS(String[] a){
+        int max = a[0].length();
+        for (String string : a) {
+            if (string.length()>max) {
+                max = string.length();
+            }
+        }
+        return max;
+    }
 
+    public static void fillWithEmptyChar(String[] a,int max){
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < max-a[i].length(); j++) {
+                a[i] = " "+a[i];
+            }
+        }
+    }
+ 
+    public static void LSDsort(String[] a ){ // O(W(R+3N)) problem strings must be same length
+        int W = a[0].length()-1; // longest string in array
+        int N = a.length; // count of string
+        int R = 256; // alphabet size
+        String[] aux = new String[N];
+        for (int d = W; d >= 0; d--) // apply key index count to every char.
+        { 
+            int[] count = new int[R+1]; 
+            for (int i = 0; i < N; i++) // increase indexes
+                count[a[i].charAt(d) + 1]++;
+            for (int r = 0; r < R; r++) 
+                count[r+1] += count[r];
+            for (int i = 0; i < N; i++) 
+                aux[count[a[i].charAt(d)]++] = a[i];
+            for (int i = 0; i < N; i++) 
+                a[i] = aux[i];
+        }
+    }
+
+    public static void main(String[] args) {
+        String word = " ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd ababcabcabababd";
         String subWord = "ababd";
+
+        //keyIndexSort(word.toCharArray());
+        String[] sa = {"cd","fg","fd","td"};
+        LSDsort(sa);
+        for (String string : sa) {
+            System.out.print(string+ " ");
+        }
+        
+
         /*
         int subStartIndex= subStrSearchKnuthMorris(word.toCharArray(),subWord.toCharArray());
         if ( subStartIndex != -1) {
@@ -123,5 +169,9 @@ public class string {
         */
 
         //System.out.println( subStrSearchBrutForce(word.toCharArray(), subWord.toCharArray()));
+
+
     }
+
+
 }
